@@ -52,6 +52,7 @@ private:
     float   x1, y1, x2, y2, x3, y3, x4, y4;
 };
 
+// 求系数，直接用贝塞尔公式带进去就能求出来(bernstein polynomials)
 inline void VBezier::coefficients(float t, float &a, float &b, float &c,
                                   float &d)
 {
@@ -64,6 +65,7 @@ inline void VBezier::coefficients(float t, float &a, float &b, float &c,
     c *= 3.0f * m_t;
 }
 
+// de casteljau算法
 inline VPointF VBezier::pointAt(float t) const
 {
     // numerically more stable:
@@ -89,6 +91,7 @@ inline VPointF VBezier::pointAt(float t) const
     return {x, y};
 }
 
+// 应用 de casteljau来做细分
 inline void VBezier::parameterSplitLeft(float t, VBezier *left)
 {
     left->x1 = x1;
@@ -113,6 +116,7 @@ inline void VBezier::parameterSplitLeft(float t, VBezier *left)
     left->y4 = y1 = left->y3 + t * (y2 - left->y3);
 }
 
+// 细分bezier曲线
 inline void VBezier::split(VBezier *firstHalf, VBezier *secondHalf) const
 {
     float c = (x2 + x3) * 0.5f;
@@ -131,7 +135,7 @@ inline void VBezier::split(VBezier *firstHalf, VBezier *secondHalf) const
     secondHalf->y4 = y4;
     firstHalf->y3 = (firstHalf->y2 + c) * 0.5f;
     secondHalf->y2 = (secondHalf->y3 + c) * 0.5f;
-    firstHalf->y4 = secondHalf->y1 = (firstHalf->y3 + secondHalf->y2) * 0.5f;
+    firstHalf->y4 = secondHalf->y1 = (firstHalf->y3 + secondHalf->y2) * 0.5f;   // 要保证曲线的1阶连续性，first分割线段的终点（second分割线的起点）为两个控制点的中点（三点共线）
 }
 
 V_END_NAMESPACE

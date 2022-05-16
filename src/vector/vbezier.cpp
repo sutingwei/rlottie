@@ -51,6 +51,7 @@ float VBezier::length() const
 
     if ((len - chord) > 0.01) {
         VBezier left, right;
+        // 细分bezier曲线，当分段曲线长度和与bezier首尾端点长度小于0.01时计算结束
         split(&left, &right);
         return left.length() + right.length();
     }
@@ -72,6 +73,7 @@ VBezier VBezier::onInterval(float t0, float t1) const
     return result;
 }
 
+// 通过长度求t
 float VBezier::tAtLength(float l, float totalLength) const
 {
     float       t = 1.0;
