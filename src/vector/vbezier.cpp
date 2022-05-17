@@ -112,6 +112,7 @@ void VBezier::splitAtLength(float len, VBezier *left, VBezier *right)
 
 VPointF VBezier::derivative(float t) const
 {
+    // 对三次贝塞尔曲线公式求导可以得到下面的值
     // p'(t) = 3 * (-(1-2t+t^2) * p0 + (1 - 4 * t + 3 * t^2) * p1 + (2 * t - 3 *
     // t^2) * p2 + t^2 * p3)
 
